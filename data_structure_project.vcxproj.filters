@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Hello_github.c">
+    <ClCompile Include="Hello_team.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
