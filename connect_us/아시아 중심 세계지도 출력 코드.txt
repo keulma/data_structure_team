@@ -1,0 +1,23 @@
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+
+# 그림과 좌표계 설정
+proj = ccrs.PlateCarree(central_longitude=150)
+
+fig = plt.figure(figsize=(20, 10))
+ax = plt.axes(projection=proj)
+
+# 해안선과 지형 정보 추가
+# ax.coastlines()
+ax.add_feature(cfeature.BORDERS, linestyle=':')
+ax.add_feature(cfeature.LAND, facecolor='white')
+ax.add_feature(cfeature.OCEAN, facecolor='lightblue')
+ax.add_feature(cfeature.LAKES, facecolor='lightblue')
+
+
+# 제목 추가
+plt.title("Cartopy로 그린 세계 지도", fontsize=14)
+
+# 그래프 보여주기
+plt.show()
