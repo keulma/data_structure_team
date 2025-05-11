@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run ConnectUs App",
+      "type": "python",
+      "request": "launch",
+      "module": "connect_us.main",               // ← 핵심 변경
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "stopOnEntry": false
+    }
+  ]
+}
