@@ -25,3 +25,5 @@ gui 2page : 좌측 세계지도, 지도 내 친밀도 선, 친구 위치 onoff�
 
 친구 목록 출력 방법 : (순서). 국가, 이름, 친밀도(하트 이모티콘 내부에 숫자)
  
+ 
+pip install folium geopy PyQt5 PyQtWebEngine
