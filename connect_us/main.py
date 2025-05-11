@@ -1,5 +1,7 @@
 # main.py
 import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from PyQt5.QtWidgets import QApplication, QStackedWidget
 from ui.start_page import StartPage
 from ui.main_page import MainPage
@@ -20,6 +22,16 @@ class MainApp(QStackedWidget):
         self.setFixedSize(500, 450)
         self.setCurrentIndex(0)
 
+        
+
+
+
+
+
+
+
+
+
     def switch_to_main(self, user_id, country, city):
         user_info = {
             "id": user_id,
@@ -27,7 +39,7 @@ class MainApp(QStackedWidget):
             "city": city
         }
 
-        current_center = self.frameGeometry().center()
+        current_center = self.frameGeometry().center()      #창 전환 부드럽게게
         self.setFixedSize(700, 500)
         qr = self.frameGeometry()
         qr.moveCenter(current_center)
@@ -36,6 +48,21 @@ class MainApp(QStackedWidget):
         self.main_page = MainPage(user_info)
         self.addWidget(self.main_page)  # index 1
         self.setCurrentIndex(1)
+
+
+
+
+
+    def closeEvent(self, event):    # 종료 시(X누름) 친구 저장
+        if self.main_page:  # 메인페이지까지 진입했을 때만 저장
+            self.main_page.save_friends()
+        event.accept()
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
