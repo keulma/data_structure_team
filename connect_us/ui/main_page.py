@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget,
     QComboBox, QFileDialog, QLabel, QMessageBox, QInputDialog
 )
+from PyQt5.QtCore import QTimer
 from geopy.geocoders import Nominatim
 
 from data.friend import Friend
@@ -119,21 +120,29 @@ class MainPage(QWidget):
             return
 
         current_row = self.friend_list_widget.currentRow()
-        if current_row >= 0:
-            friend = self.friends[current_row]
-            friend.x = lat
-            friend.y = lng
+        if current_row < 0:
+            return
 
-            # ✅ 위도/경도 → 국가 변환
-            geolocator = Nominatim(user_agent="friend_map_app")
-            location = geolocator.reverse((lat, lng), language='en')
-            if location and 'country' in location.raw['address']:
-                friend.country = location.raw['address']['country']
-                print(f"🌍 국가 자동 설정됨: {friend.country}")
+        friend = self.friends[current_row]
+        friend.x = lat
+        friend.y = lng
+        self.awaiting_location_input = False
 
-            self.awaiting_location_input = False
-            QMessageBox.information(self, "입력 완료", f"{friend.name}의 위치가 등록되었습니다!")
-            self.update_list()
+        # ✅ reverse geocode는 약간 지연시켜서 실행 (GUI 끊김 방지)
+        def update_country():
+            try:
+                geolocator = Nominatim(user_agent="friend_map_app")
+                location = geolocator.reverse((lat, lng), language='en')
+                if location and 'country' in location.raw['address']:
+                    friend.country = location.raw['address']['country']
+                    print(f"🌍 국가 자동 설정됨: {friend.country}")
+            except Exception as e:
+                print(f"❌ Reverse geocoding 오류: {e}")
+            finally:
+                self.update_list()
+                QMessageBox.information(self, "입력 완료", f"{friend.name}의 위치가 등록되었습니다!")
+
+        QTimer.singleShot(100, update_country)  # 100ms 후 실행 (메인 루프 잠깐 비우기)
 
 
     def rename_selected_friend(self):
