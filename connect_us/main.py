@@ -4,6 +4,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from PyQt5.QtWidgets import QApplication, QStackedWidget
 from ui.start_page import StartPage
 from ui.main_page import MainPage
