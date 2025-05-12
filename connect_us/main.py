@@ -3,13 +3,7 @@ import sys
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
-<<<<<<< HEAD
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-=======
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
->>>>>>> 9ffa10a601b3d916fc219b60c77a3f2644bb23c7
 from PyQt5.QtWidgets import QApplication, QStackedWidget
 from ui.start_page import StartPage
 from ui.main_page import MainPage
