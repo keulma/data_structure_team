@@ -142,7 +142,7 @@ class MainPage(QWidget):
                 self.update_list()
                 QMessageBox.information(self, "입력 완료", f"{friend.name}의 위치가 등록되었습니다!")
 
-        QTimer.singleShot(100, update_country)  # 100ms 후 실행 (메인 루프 잠깐 비우기)
+        QTimer.singleShot(50, update_country)  # 100ms 후 실행 (메인 루프 잠깐 비우기)
 
 
     def rename_selected_friend(self):

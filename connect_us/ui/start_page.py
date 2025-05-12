@@ -19,8 +19,9 @@ class StartPage(QWidget):
         # connect-us 표지 이미지 추가 
         image_label = QLabel()
         image_label.setPixmap(QPixmap("assets/connect-us_image.png"))
+
         image_label.setScaledContents(True)
-        image_label.setFixedHeight(300)  # 적절한 높이로 조절
+        image_label.setFixedHeight(1000)  # 적절한 높이로 조절
         layout.addWidget(image_label)
 
         layout.addSpacing(15)   #공백 띄우기

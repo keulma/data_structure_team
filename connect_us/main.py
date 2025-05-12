@@ -3,7 +3,7 @@ import sys
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
-
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from PyQt5.QtWidgets import QApplication, QStackedWidget
 from ui.start_page import StartPage
 from ui.main_page import MainPage
@@ -21,17 +21,8 @@ class MainApp(QStackedWidget):
         self.main_page = None
 
         self.setWindowTitle("Friend Map Project")
-        self.setFixedSize(500, 450)
+        self.setFixedSize(1600, 1200)
         self.setCurrentIndex(0)
-
-        
-
-
-
-
-
-
-
 
 
     def switch_to_main(self, user_id, country, city):
@@ -42,7 +33,7 @@ class MainApp(QStackedWidget):
         }
 
         current_center = self.frameGeometry().center()      #창 전환 부드럽게게
-        self.setFixedSize(700, 500)
+        self.setFixedSize(1800, 1200)
         qr = self.frameGeometry()
         qr.moveCenter(current_center)
         self.move(qr.topLeft())
