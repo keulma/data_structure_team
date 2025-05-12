@@ -18,8 +18,7 @@ class StartPage(QWidget):
 
         # connect-us 표지 이미지 추가 
         image_label = QLabel()
-        image_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "connect-us_image.png"))
-        image_label.setPixmap(QPixmap(image_path))
+        image_label.setPixmap(QPixmap("assets/connect-us_image.png"))
         image_label.setScaledContents(True)
         image_label.setFixedHeight(300)  # 적절한 높이로 조절
         layout.addWidget(image_label)
@@ -28,6 +27,7 @@ class StartPage(QWidget):
 
         self.id_input = QLineEdit()
         self.id_input.setPlaceholderText("ID")
+
         layout.addWidget(self.id_input)
 
         self.country_input = QLineEdit()
