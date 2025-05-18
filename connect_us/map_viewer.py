@@ -27,8 +27,27 @@ class MapViewer(QWidget):
     def update_map(self):
         os.makedirs("assets", exist_ok=True)
         geolocator = Nominatim(user_agent="friend_map_app")
-        m = folium.Map(location=[30, 100], zoom_start=3)
-
+        m = folium.Map(
+            location=[36.5, 127.5],
+            zoom_start=5,
+            min_zoom=3,
+            max_zoom=6,
+            tiles="CartoDB positron",
+            control_scale=True,
+            no_wrap=True,
+            max_bounds=True
+        )
+        map_var = m.get_name()
+        m.get_root().script.add_child(folium.Element(f"""
+            setTimeout(function() {{
+                if (typeof {map_var} !== 'undefined') {{
+                    {map_var}.setMaxBounds([[25, -25], [45, 335]]);
+                    {map_var}.options.maxBoundsViscosity = 1.0;
+                    {map_var}.setMinZoom(3);
+                    {map_var}.setMaxZoom(8);
+                }}
+            }}, 500);
+        """))
         coords = {}
         for f in self.friends:
             try:

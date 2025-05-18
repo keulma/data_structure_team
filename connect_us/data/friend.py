@@ -1,7 +1,7 @@
 # data/friend.py
 
 from datetime import datetime
-
+import time
 
 class Friend:
     def __init__(self, name, country, city, x=0, y=0, intimacy=0):

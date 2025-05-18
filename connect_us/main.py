@@ -23,7 +23,7 @@ class MainApp(QStackedWidget):
         self.setWindowTitle("Friend Map Project")
         self.setFixedSize(1600, 1200)
         self.setCurrentIndex(0)
-
+    
 
     def switch_to_main(self, user_id, country, city):
         user_info = {
