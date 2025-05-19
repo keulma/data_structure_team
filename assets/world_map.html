@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_520f94a5851439f2df57044a44df1400 {
+                #map_3b887734159cec588f89fa24a34d9c3e {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_520f94a5851439f2df57044a44df1400" ></div>
+            <div class="folium-map" id="map_3b887734159cec588f89fa24a34d9c3e" ></div>
         
 </body>
 <script>
     
     
             setTimeout(function() {
-                if (typeof map_520f94a5851439f2df57044a44df1400 !== 'undefined') {
-                    map_520f94a5851439f2df57044a44df1400.setMaxBounds([[25, -25], [45, 335]]);
-                    map_520f94a5851439f2df57044a44df1400.options.maxBoundsViscosity = 1.0;
-                    map_520f94a5851439f2df57044a44df1400.setMinZoom(3);
-                    map_520f94a5851439f2df57044a44df1400.setMaxZoom(8);
+                if (typeof map_3b887734159cec588f89fa24a34d9c3e !== 'undefined') {
+                    map_3b887734159cec588f89fa24a34d9c3e.setMaxBounds([[25, -25], [45, 335]]);
+                    map_3b887734159cec588f89fa24a34d9c3e.options.maxBoundsViscosity = 1.0;
+                    map_3b887734159cec588f89fa24a34d9c3e.setMinZoom(3);
+                    map_3b887734159cec588f89fa24a34d9c3e.setMaxZoom(8);
                 }
             }, 500);
         
@@ -60,14 +60,14 @@
                 window.clickedLng = e.latlng.lng;
             }
             setTimeout(function() {
-                if (typeof map_520f94a5851439f2df57044a44df1400 !== 'undefined') {
-                    map_520f94a5851439f2df57044a44df1400.on('click', onMapClick);
+                if (typeof map_3b887734159cec588f89fa24a34d9c3e !== 'undefined') {
+                    map_3b887734159cec588f89fa24a34d9c3e.on('click', onMapClick);
                 }
             }, 500);
         
     
-            var map_520f94a5851439f2df57044a44df1400 = L.map(
-                "map_520f94a5851439f2df57044a44df1400",
+            var map_3b887734159cec588f89fa24a34d9c3e = L.map(
+                "map_3b887734159cec588f89fa24a34d9c3e",
                 {
                     center: [36.5, 127.5],
                     crs: L.CRS.EPSG3857,
@@ -90,13 +90,13 @@
 
                 }
             );
-            L.control.scale().addTo(map_520f94a5851439f2df57044a44df1400);
+            L.control.scale().addTo(map_3b887734159cec588f89fa24a34d9c3e);
 
             
 
         
     
-            var tile_layer_c191a3b499208fa7047b530285f90470 = L.tileLayer(
+            var tile_layer_388a863e5a90f378584b9344ffd9069a = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 3,
@@ -113,7 +113,7 @@
             );
         
     
-            tile_layer_c191a3b499208fa7047b530285f90470.addTo(map_520f94a5851439f2df57044a44df1400);
+            tile_layer_388a863e5a90f378584b9344ffd9069a.addTo(map_3b887734159cec588f89fa24a34d9c3e);
         
 </script>
 </html>
