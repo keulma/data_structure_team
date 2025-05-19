@@ -11,7 +11,7 @@ class MapViewer(QWidget):
         self.friends = friends
         self.clicked_coords = None
         self.on_click_callback = None
-        self.click_checked = False  # ✅ 클릭 여부 플래그
+        self.click_checked = False  # 클릭 여부 플래그
         self.init_ui()
 
     def init_ui(self):
@@ -30,7 +30,7 @@ class MapViewer(QWidget):
         m = folium.Map(
             location=[36.5, 127.5],
             zoom_start=5,
-            min_zoom=3,
+            min_zoom=2,
             max_zoom=6,
             tiles="CartoDB positron",
             control_scale=True,
@@ -41,9 +41,9 @@ class MapViewer(QWidget):
         m.get_root().script.add_child(folium.Element(f"""
             setTimeout(function() {{
                 if (typeof {map_var} !== 'undefined') {{
-                    {map_var}.setMaxBounds([[25, -25], [45, 335]]);
-                    {map_var}.options.maxBoundsViscosity = 1.0;
-                    {map_var}.setMinZoom(3);
+                    {map_var}.setMaxBounds([[-70, -25], [90, 335]]);
+                    {map_var}.options.maxBoundsViscosity = 0;
+                    {map_var}.setMinZoom(2);
                     {map_var}.setMaxZoom(8);
                 }}
             }}, 500);
@@ -86,7 +86,7 @@ class MapViewer(QWidget):
 
     def check_for_click(self):
         if self.click_checked:
-            return  # ✅ 이미 클릭했으면 종료
+            return  # 이미 클릭했으면 종료
 
         self.web_view.page().runJavaScript("""
             if (typeof window.clickedLat !== 'undefined' && typeof window.clickedLng !== 'undefined') {

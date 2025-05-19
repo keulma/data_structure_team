@@ -2,7 +2,7 @@
 
 import os
 import json
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QSizePolicy
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
@@ -18,10 +18,10 @@ class StartPage(QWidget):
 
         # connect-us 표지 이미지 추가 
         image_label = QLabel()
-        image_label.setPixmap(QPixmap("assets/connect-us_image.png"))
-
+        pixmap = QPixmap("assets/connect-us_image.png")
+        image_label.setPixmap(pixmap)
         image_label.setScaledContents(True)
-        image_label.setFixedHeight(1000)  # 적절한 높이로 조절
+        image_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(image_label)
 
         layout.addSpacing(15)   #공백 띄우기
@@ -56,13 +56,13 @@ class StartPage(QWidget):
         os.makedirs("users", exist_ok=True)
         file_path = os.path.join("users", f"{user_id}.json")        #users/ 디렉토리 생성 (이미 있으면 넘어감)
 
-        # 🟨 저장된 유저가 있다면 → 불러오기
+        # 사용자 정보가 이미 있다면 → 불러오기
         if os.path.exists(file_path):
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 user_info = data["user"]  # 배열: [id, country, city]
         else:
-            # 🟩 없다면 → 새로 저장
+            # 사용자 정보 없음음 → 새로 저장
             user_info = [
                 user_id,
                 self.country_input.text().strip(),

@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from PyQt5.QtWidgets import QApplication, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QStackedWidget, QDesktopWidget
 from ui.start_page import StartPage
 from ui.main_page import MainPage
 
@@ -13,15 +13,26 @@ class MainApp(QStackedWidget):
     def __init__(self):
         super().__init__()
 
-        # StartPage에서 MainPage로 전환하기 위한 콜백 전달
+        # 사용자 모니터 해상도 정보 가져오기
+        screen_rect = QDesktopWidget().availableGeometry()
+        self.screen_width = screen_rect.width()
+        self.screen_height = screen_rect.height()
+
+        # start page 크기 설정정
+        start_width = int(self.screen_width * 0.4)
+        start_height = int(self.screen_height * 0.5)
+
+        self.setWindowTitle("Friend Map Project")
+        self.setFixedSize(start_width, start_height)
+        self.move(
+            (self.screen_width - start_width) // 2,
+            (self.screen_height - start_height) // 2
+        )
+
         self.start_page = StartPage(self.switch_to_main)
         self.addWidget(self.start_page)  # index 0
 
-        # MainPage는 로그인 후 생성됨
         self.main_page = None
-
-        self.setWindowTitle("Friend Map Project")
-        self.setFixedSize(1600, 1200)
         self.setCurrentIndex(0)
     
 
@@ -32,8 +43,12 @@ class MainApp(QStackedWidget):
             "city": city
         }
 
-        current_center = self.frameGeometry().center()      #창 전환 부드럽게게
-        self.setFixedSize(1800, 1200)
+        # main page 크기 설정
+        main_width = int(self.screen_width * 0.8)
+        main_height = int(self.screen_height * 0.7)
+
+        current_center = self.frameGeometry().center()
+        self.setFixedSize(main_width, main_height)
         qr = self.frameGeometry()
         qr.moveCenter(current_center)
         self.move(qr.topLeft())
@@ -43,18 +58,10 @@ class MainApp(QStackedWidget):
         self.setCurrentIndex(1)
 
 
-
-
-
     def closeEvent(self, event):    # 종료 시(X누름) 친구 저장
         if self.main_page:  # 메인페이지까지 진입했을 때만 저장
             self.main_page.save_friends()
         event.accept()
-
-
-
-
-
 
 
 

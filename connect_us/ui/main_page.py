@@ -48,13 +48,13 @@ class MainPage(QWidget):
         add_btn.clicked.connect(self.add_friend_dialog)
         right_panel.addWidget(add_btn)
 
-        location_btn = QPushButton("위치 입력")
-        location_btn.clicked.connect(self.start_location_input)
-        right_panel.addWidget(location_btn)
-
         rename_btn = QPushButton("이름 설정(변경)")
         rename_btn.clicked.connect(self.rename_selected_friend)
         right_panel.addWidget(rename_btn)
+
+        location_btn = QPushButton("위치 입력")
+        location_btn.clicked.connect(self.start_location_input)
+        right_panel.addWidget(location_btn)
 
         delete_btn = QPushButton("Delete Friend")
         delete_btn.clicked.connect(self.delete_selected_friend)
