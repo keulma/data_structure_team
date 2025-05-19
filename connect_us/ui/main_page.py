@@ -30,7 +30,7 @@ class MainPage(QWidget):
 
         # ✅ 왼쪽 지도 영역
         self.map_viewer = MapViewer(self.friends)
-        layout.addWidget(self.map_viewer, 2)  # 지도는 2 비율
+        layout.addWidget(self.map_viewer, 4)  # 지도는 3 비율
 
         # ✅ 오른쪽 친구 목록 및 제어 UI
         right_panel = QVBoxLayout()

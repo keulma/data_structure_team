@@ -44,7 +44,7 @@ class MainApp(QStackedWidget):
         }
 
         # main page 크기 설정
-        main_width = int(self.screen_width * 0.8)
+        main_width = int(self.screen_width * 0.7)
         main_height = int(self.screen_height * 0.7)
 
         current_center = self.frameGeometry().center()
