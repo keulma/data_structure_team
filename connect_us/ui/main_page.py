@@ -132,7 +132,7 @@ class MainPage(QWidget):
         def update_country():
             try:
                 geolocator = Nominatim(user_agent="friend_map_app")
-                location = geolocator.reverse((lat, lng), language='en')
+                location = geolocator.reverse((lat, lng), language='en', timeout = 3)
                 if location and 'country' in location.raw['address']:
                     friend.country = location.raw['address']['country']
                     print(f"🌍 국가 자동 설정됨: {friend.country}")
