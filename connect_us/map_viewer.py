@@ -9,7 +9,6 @@ from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="friend_map_app")
 
 def generate_smooth_curve(p1, p2, curve_strength=0.3, num_points=20):
-    import math
 
     mid_lat = (p1[0] + p2[0]) / 2
     mid_lng = (p1[1] + p2[1]) / 2
@@ -37,6 +36,8 @@ class MapViewer(QWidget):
         self.clicked_coords = None
         self.on_click_callback = None
         self.click_checked = False
+        self.selected_period = "하루" 
+
         self.init_ui()
 
     def init_ui(self):
@@ -102,15 +103,15 @@ class MapViewer(QWidget):
             for friend in self.friends:
                 if friend.x != 0 and friend.y != 0:
                     friend_latlon = [friend.x, friend.y]
-                    talkweight = max(0, min(friend.intimacy, 10000))  # 굵기 1~10
-                    #usedweight = talkweight
-                    color = "#ff6666"
+                    talk_weight = self.get_weight_from_intimacy(friend.intimacy)
+                    
+                    color = "#e41b1b"
 
                     points = generate_smooth_curve(user_latlon, friend_latlon)
                     folium.PolyLine(
                         locations=points,
                         color=color,
-                        weight=talkweight,
+                        weight=talk_weight,
                         opacity=0.7
                     ).add_to(m)
         # 클릭 이벤트 등록
@@ -160,3 +161,18 @@ class MapViewer(QWidget):
                 self.on_click_callback(lat, lng)
 
         QTimer.singleShot(1000, self.check_for_click)
+
+    def get_weight_from_intimacy(self, intimacy):
+        period_ratio = {
+            "오늘": 365,
+            "1일": 182,
+            "1주일": 52,
+            "1개월": 12,
+            "6개월": 2,
+            "1년": 1
+        }
+
+        ratio = period_ratio.get(self.selected_period, 1)
+        adjusted_score = min(intimacy * ratio, 10000)
+        level_weight = max(0, int(adjusted_score // 1000))  # 0~999 → 1, ..., 9000~9999 → 10
+        return level_weight

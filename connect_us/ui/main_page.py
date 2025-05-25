@@ -58,22 +58,23 @@ class MainPage(QWidget):
         location_btn.clicked.connect(self.start_location_input)
         right_panel.addWidget(location_btn)
 
-        delete_btn = QPushButton("Delete Friend")
-        delete_btn.clicked.connect(self.delete_selected_friend)
-        right_panel.addWidget(delete_btn)
-
-
-
-        upload_btn = QPushButton("Upload KakaoTalk Chat")
-        upload_btn.clicked.connect(self.upload_chat)
-        right_panel.addWidget(upload_btn)
 
         self.period_box = QComboBox()
         self.period_box.addItems(["오늘", "1일", "1주일", "1개월", "1년"])
         self.period_box.currentTextChanged.connect(self.apply_period)
         right_panel.addWidget(QLabel("분석 기간"))
         right_panel.addWidget(self.period_box)
-        self.selected_period = "1주일"  # 기본값 - 1주일로 설정
+        self.selected_period = "오늘"  # 기본값 - 오늘로 설정
+
+        upload_btn = QPushButton("Upload KakaoTalk Chat")
+        upload_btn.clicked.connect(self.upload_chat)
+        right_panel.addWidget(upload_btn)
+
+
+        delete_btn = QPushButton("Delete Friend")
+        delete_btn.clicked.connect(self.delete_selected_friend)
+        right_panel.addWidget(delete_btn)
+
 
         layout.addLayout(right_panel, 1)
         self.setLayout(layout)
@@ -209,26 +210,42 @@ class MainPage(QWidget):
 
         path, _ = QFileDialog.getOpenFileName(self, "Open KakaoTalk Text", "", "Text Files (*.txt)")
         if path:
-            # ✅ 대화 분석
             parse_kakao_txt(path)
-
             friend = self.friends[row]
+            friend.chat_history = dict(all_conversations)  # ✅ 날짜별 메시지 수 저장
 
-            # ✅ intimacy 반영 (선택사항)
-            friend.intimacy += sum(all_conversations.values())
+            # ✅ 현재 분석 기간 기준으로 intimacy 계산
+            today = datetime.date.today()
+            period = self.selected_period
+            count = 0
 
-            # ✅ chat_history에 날짜별 대화 수 저장
-            friend.chat_history = dict(all_conversations)
+            for date_str, num in friend.chat_history.items():
+                date_obj = datetime.date.fromisoformat(date_str)
+                delta = (today - date_obj).days
 
-            # ✅ 저장
+                if period == "오늘" and delta == 0:
+                    count += num
+                elif period == "1일" and delta <= 1:
+                    count += num
+                elif period == "1주일" and delta <= 7:
+                    count += num
+                elif period == "1개월" and delta <= 30:
+                    count += num
+                elif period == "1년" and delta <= 365:
+                    count += num
+
+            friend.intimacy = count  # ✅ 선택된 분석 기간 기준으로 반영
+
             self.save_friends()
             self.update_list()
 
-            QMessageBox.information(self, "완료", f"{friend.name}의 채팅 기록이 저장되었습니다.")
 
 
     def apply_period(self, period):
         self.selected_period = period
+        self.map_viewer.selected_period = period  
+        self.map_viewer.update_map()
+        
         today = datetime.date.today()
 
         for friend in self.friends:

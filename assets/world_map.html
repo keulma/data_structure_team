@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_b1d3e1196b5c5f1b744b5f4df7d9f7ac {
+                #map_b1abd55430fd27ef21ce5944adcb59de {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_b1d3e1196b5c5f1b744b5f4df7d9f7ac" ></div>
+            <div class="folium-map" id="map_b1abd55430fd27ef21ce5944adcb59de" ></div>
         
 </body>
 <script>
     
     
             setTimeout(function() {
-                if (typeof map_b1d3e1196b5c5f1b744b5f4df7d9f7ac !== 'undefined') {
-                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMaxBounds([[-70, -25], [90, 335]]);
-                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.options.maxBoundsViscosity = 0;
-                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMinZoom(2);
-                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMaxZoom(8);
+                if (typeof map_b1abd55430fd27ef21ce5944adcb59de !== 'undefined') {
+                    map_b1abd55430fd27ef21ce5944adcb59de.setMaxBounds([[-70, -25], [90, 335]]);
+                    map_b1abd55430fd27ef21ce5944adcb59de.options.maxBoundsViscosity = 0;
+                    map_b1abd55430fd27ef21ce5944adcb59de.setMinZoom(2);
+                    map_b1abd55430fd27ef21ce5944adcb59de.setMaxZoom(8);
                 }
             }, 500);
         
@@ -60,14 +60,14 @@
                 window.clickedLng = e.latlng.lng;
             }
             setTimeout(function() {
-                if (typeof map_b1d3e1196b5c5f1b744b5f4df7d9f7ac !== 'undefined') {
-                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.on('click', onMapClick);
+                if (typeof map_b1abd55430fd27ef21ce5944adcb59de !== 'undefined') {
+                    map_b1abd55430fd27ef21ce5944adcb59de.on('click', onMapClick);
                 }
             }, 500);
         
     
-            var map_b1d3e1196b5c5f1b744b5f4df7d9f7ac = L.map(
-                "map_b1d3e1196b5c5f1b744b5f4df7d9f7ac",
+            var map_b1abd55430fd27ef21ce5944adcb59de = L.map(
+                "map_b1abd55430fd27ef21ce5944adcb59de",
                 {
                     center: [36.5, 127.5],
                     crs: L.CRS.EPSG3857,
@@ -90,13 +90,13 @@
 
                 }
             );
-            L.control.scale().addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
+            L.control.scale().addTo(map_b1abd55430fd27ef21ce5944adcb59de);
 
             
 
         
     
-            var tile_layer_846c656c1e31f287f3e6f706641fe11f = L.tileLayer(
+            var tile_layer_0d4c60e0c35b7ea1c8316abb916cc4d5 = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 2,
@@ -113,17 +113,34 @@
             );
         
     
-            tile_layer_846c656c1e31f287f3e6f706641fe11f.addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
+            tile_layer_0d4c60e0c35b7ea1c8316abb916cc4d5.addTo(map_b1abd55430fd27ef21ce5944adcb59de);
         
     
-            var marker_a2378d1dbf92c73575a3c21bf94e72f5 = L.marker(
+            var marker_d024f9f307a95efff7c03a9aac834c58 = L.marker(
+                [46.31658418182218, 65.03906250000001],
+                {
+}
+            ).addTo(map_b1abd55430fd27ef21ce5944adcb59de);
+        
+    
+            marker_d024f9f307a95efff7c03a9aac834c58.bindTooltip(
+                `<div>
+                     - ❤️362
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_614649e19cbbd60da9fa522892055a21 = L.marker(
                 [37.5666791, 126.9782914],
                 {
 }
-            ).addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
+            ).addTo(map_b1abd55430fd27ef21ce5944adcb59de);
         
     
-            var icon_6eea549311de2f20d6605708c2afe6e8 = L.AwesomeMarkers.icon(
+            var icon_149769c471fbf34d6073fbe933c7f9ca = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -134,9 +151,9 @@
             );
         
     
-            marker_a2378d1dbf92c73575a3c21bf94e72f5.bindTooltip(
+            marker_614649e19cbbd60da9fa522892055a21.bindTooltip(
                 `<div>
-                     🧍 dgh (You)
+                     🧍 최 (You)
                  </div>`,
                 {
   "sticky": true,
@@ -144,7 +161,13 @@
             );
         
     
-                marker_a2378d1dbf92c73575a3c21bf94e72f5.setIcon(icon_6eea549311de2f20d6605708c2afe6e8);
+                marker_614649e19cbbd60da9fa522892055a21.setIcon(icon_149769c471fbf34d6073fbe933c7f9ca);
             
+    
+            var poly_line_7cf3edb06cc8730ded5fed8a53fb7daa = L.polyline(
+                [[37.5666791, 126.9782914], [36.238906330441104, 123.63195766016807], [35.096951247582226, 120.31187363558162], [34.140813851423324, 117.0180393262406], [33.37049414196445, 113.7504547321451], [32.785992119205545, 110.50911985329502], [32.38730778314665, 107.29403468969039], [32.17444113378777, 104.10519924133128], [32.14739217112888, 100.9426135082176], [32.30616089516999, 97.80627749034943], [32.650747305911096, 94.69619118772668], [33.1811514033522, 91.61235460034942], [33.897373187493315, 88.55476772821761], [34.79941265833442, 85.52343057133129], [35.88726981587553, 82.51834312969042], [37.16094466011664, 79.53950540329501], [38.620437191057746, 76.58691739214508], [40.26574740869885, 73.66057909624061], [42.09687531303996, 70.76049051558161], [44.11382090408107, 67.88665165016809], [46.31658418182218, 65.03906250000001]],
+                {"bubblingMouseEvents": true, "color": "#e41b1b", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#e41b1b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.7, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_b1abd55430fd27ef21ce5944adcb59de);
+        
 </script>
 </html>
