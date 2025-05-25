@@ -8,25 +8,20 @@ from geopy.geocoders import Nominatim
 
 geolocator = Nominatim(user_agent="friend_map_app")
 
-def generate_smooth_curve(p1, p2, curve_strength=0.3, num_points=20):
-
+def generate_smooth_curve(p1, p2, curve_strength=0.5, num_points=60):
     mid_lat = (p1[0] + p2[0]) / 2
     mid_lng = (p1[1] + p2[1]) / 2
-    dx = p2[1] - p1[1]
-    dy = p2[0] - p1[0]
-    angle = math.atan2(dy, dx) + math.pi / 2
-    curve_distance = math.sqrt(dx**2 + dy**2) * curve_strength
-    ctrl_lat = mid_lat + curve_distance * math.sin(angle)
-    ctrl_lng = mid_lng + curve_distance * math.cos(angle)
 
-    # Quadratic Bezier formula
+    # 곡선 중심을 항상 북쪽(위)으로 올리기
+    curve_lat = mid_lat + abs(p2[0] - p1[0]) * curve_strength
+    curve_lng = mid_lng  # 좌우 이동 없음
+
     def bezier(t):
-        lat = (1 - t) ** 2 * p1[0] + 2 * (1 - t) * t * ctrl_lat + t ** 2 * p2[0]
-        lng = (1 - t) ** 2 * p1[1] + 2 * (1 - t) * t * ctrl_lng + t ** 2 * p2[1]
+        lat = (1 - t) ** 2 * p1[0] + 2 * (1 - t) * t * curve_lat + t ** 2 * p2[0]
+        lng = (1 - t) ** 2 * p1[1] + 2 * (1 - t) * t * curve_lng + t ** 2 * p2[1]
         return [lat, lng]
 
     return [bezier(t / num_points) for t in range(num_points + 1)]
-
 
 class MapViewer(QWidget):
     def __init__(self, friends, user_info):
@@ -174,5 +169,9 @@ class MapViewer(QWidget):
 
         ratio = period_ratio.get(self.selected_period, 1)
         adjusted_score = min(intimacy * ratio, 10000)
-        level_weight = max(0, int(adjusted_score // 1000))  # 0~999 → 1, ..., 9000~9999 → 10
-        return level_weight
+        if adjusted_score == 0:
+            level_weight = 0
+            return level_weight
+        else :
+            level_weight = int(adjusted_score // 1000) + 1  # 0~999 → 1, ..., 9000~9999 → 10
+            return level_weight
