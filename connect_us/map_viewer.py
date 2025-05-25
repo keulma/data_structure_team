@@ -1,4 +1,5 @@
 import folium
+import math
 import os
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
@@ -6,6 +7,27 @@ from PyQt5.QtCore import QUrl, QTimer
 from geopy.geocoders import Nominatim
 
 geolocator = Nominatim(user_agent="friend_map_app")
+
+def generate_smooth_curve(p1, p2, curve_strength=0.3, num_points=20):
+    import math
+
+    mid_lat = (p1[0] + p2[0]) / 2
+    mid_lng = (p1[1] + p2[1]) / 2
+    dx = p2[1] - p1[1]
+    dy = p2[0] - p1[0]
+    angle = math.atan2(dy, dx) + math.pi / 2
+    curve_distance = math.sqrt(dx**2 + dy**2) * curve_strength
+    ctrl_lat = mid_lat + curve_distance * math.sin(angle)
+    ctrl_lng = mid_lng + curve_distance * math.cos(angle)
+
+    # Quadratic Bezier formula
+    def bezier(t):
+        lat = (1 - t) ** 2 * p1[0] + 2 * (1 - t) * t * ctrl_lat + t ** 2 * p2[0]
+        lng = (1 - t) ** 2 * p1[1] + 2 * (1 - t) * t * ctrl_lng + t ** 2 * p2[1]
+        return [lat, lng]
+
+    return [bezier(t / num_points) for t in range(num_points + 1)]
+
 
 class MapViewer(QWidget):
     def __init__(self, friends, user_info):
@@ -75,7 +97,22 @@ class MapViewer(QWidget):
                 ).add_to(m)
         except Exception as e:
             print(f"[❌ 사용자 위치 오류] {e}")
-            
+
+        if 'user_latlon' in locals():
+            for friend in self.friends:
+                if friend.x != 0 and friend.y != 0:
+                    friend_latlon = [friend.x, friend.y]
+                    talkweight = max(0, min(friend.intimacy, 10000))  # 굵기 1~10
+                    #usedweight = talkweight
+                    color = "#ff6666"
+
+                    points = generate_smooth_curve(user_latlon, friend_latlon)
+                    folium.PolyLine(
+                        locations=points,
+                        color=color,
+                        weight=talkweight,
+                        opacity=0.7
+                    ).add_to(m)
         # 클릭 이벤트 등록
         m.get_root().script.add_child(folium.Element(f"""
             function onMapClick(e) {{
@@ -93,6 +130,8 @@ class MapViewer(QWidget):
         m.save(map_path)
         self.web_view.load(QUrl.fromLocalFile(map_path))
         QTimer.singleShot(1000, self.check_for_click)
+
+
 
     def check_for_click(self):
         if self.click_checked:

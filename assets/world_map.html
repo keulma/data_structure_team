@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_83948bb48835ba9cec2c712572a7ef66 {
+                #map_b1d3e1196b5c5f1b744b5f4df7d9f7ac {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_83948bb48835ba9cec2c712572a7ef66" ></div>
+            <div class="folium-map" id="map_b1d3e1196b5c5f1b744b5f4df7d9f7ac" ></div>
         
 </body>
 <script>
     
     
             setTimeout(function() {
-                if (typeof map_83948bb48835ba9cec2c712572a7ef66 !== 'undefined') {
-                    map_83948bb48835ba9cec2c712572a7ef66.setMaxBounds([[-70, -25], [90, 335]]);
-                    map_83948bb48835ba9cec2c712572a7ef66.options.maxBoundsViscosity = 0;
-                    map_83948bb48835ba9cec2c712572a7ef66.setMinZoom(2);
-                    map_83948bb48835ba9cec2c712572a7ef66.setMaxZoom(8);
+                if (typeof map_b1d3e1196b5c5f1b744b5f4df7d9f7ac !== 'undefined') {
+                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMaxBounds([[-70, -25], [90, 335]]);
+                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.options.maxBoundsViscosity = 0;
+                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMinZoom(2);
+                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.setMaxZoom(8);
                 }
             }, 500);
         
@@ -60,14 +60,14 @@
                 window.clickedLng = e.latlng.lng;
             }
             setTimeout(function() {
-                if (typeof map_83948bb48835ba9cec2c712572a7ef66 !== 'undefined') {
-                    map_83948bb48835ba9cec2c712572a7ef66.on('click', onMapClick);
+                if (typeof map_b1d3e1196b5c5f1b744b5f4df7d9f7ac !== 'undefined') {
+                    map_b1d3e1196b5c5f1b744b5f4df7d9f7ac.on('click', onMapClick);
                 }
             }, 500);
         
     
-            var map_83948bb48835ba9cec2c712572a7ef66 = L.map(
-                "map_83948bb48835ba9cec2c712572a7ef66",
+            var map_b1d3e1196b5c5f1b744b5f4df7d9f7ac = L.map(
+                "map_b1d3e1196b5c5f1b744b5f4df7d9f7ac",
                 {
                     center: [36.5, 127.5],
                     crs: L.CRS.EPSG3857,
@@ -90,13 +90,13 @@
 
                 }
             );
-            L.control.scale().addTo(map_83948bb48835ba9cec2c712572a7ef66);
+            L.control.scale().addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
 
             
 
         
     
-            var tile_layer_389c16f3b2a45f2bffc9675bbd7e7b07 = L.tileLayer(
+            var tile_layer_846c656c1e31f287f3e6f706641fe11f = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 2,
@@ -113,17 +113,17 @@
             );
         
     
-            tile_layer_389c16f3b2a45f2bffc9675bbd7e7b07.addTo(map_83948bb48835ba9cec2c712572a7ef66);
+            tile_layer_846c656c1e31f287f3e6f706641fe11f.addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
         
     
-            var marker_d2afa957406e2f04a212bfc144a037f5 = L.marker(
+            var marker_a2378d1dbf92c73575a3c21bf94e72f5 = L.marker(
                 [37.5666791, 126.9782914],
                 {
 }
-            ).addTo(map_83948bb48835ba9cec2c712572a7ef66);
+            ).addTo(map_b1d3e1196b5c5f1b744b5f4df7d9f7ac);
         
     
-            var icon_df07fb24f72f0493f126cddf975f06ad = L.AwesomeMarkers.icon(
+            var icon_6eea549311de2f20d6605708c2afe6e8 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -134,9 +134,9 @@
             );
         
     
-            marker_d2afa957406e2f04a212bfc144a037f5.bindTooltip(
+            marker_a2378d1dbf92c73575a3c21bf94e72f5.bindTooltip(
                 `<div>
-                     🧍 김동준 (You)
+                     🧍 dgh (You)
                  </div>`,
                 {
   "sticky": true,
@@ -144,7 +144,7 @@
             );
         
     
-                marker_d2afa957406e2f04a212bfc144a037f5.setIcon(icon_df07fb24f72f0493f126cddf975f06ad);
+                marker_a2378d1dbf92c73575a3c21bf94e72f5.setIcon(icon_6eea549311de2f20d6605708c2afe6e8);
             
 </script>
 </html>
