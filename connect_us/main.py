@@ -55,7 +55,7 @@ class MainApp(QStackedWidget):
 
         self.main_page = MainPage(user_info)
         self.addWidget(self.main_page)  # index 1
-        self.setCurrentIndex(1)
+        self.setCurrentIndex(1)              
 
 
     def closeEvent(self, event):    # 종료 시(X누름) 친구 저장
