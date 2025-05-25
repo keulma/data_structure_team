@@ -29,7 +29,7 @@ class MainPage(QWidget):
         layout = QHBoxLayout()
 
         # ✅ 왼쪽 지도 영역
-        self.map_viewer = MapViewer(self.friends)
+        self.map_viewer = MapViewer(self.friends, self.user_info)
         layout.addWidget(self.map_viewer, 4)  # 지도는 3 비율
 
         # ✅ 오른쪽 친구 목록 및 제어 UI
@@ -127,6 +127,7 @@ class MainPage(QWidget):
         friend.x = lat
         friend.y = lng
         self.awaiting_location_input = False
+        self.map_viewer.friends = self.friends
 
         # ✅ reverse geocode는 약간 지연시켜서 실행 (GUI 끊김 방지)
         def update_country():

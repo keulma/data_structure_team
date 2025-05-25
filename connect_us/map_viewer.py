@@ -3,15 +3,15 @@ import os
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import QUrl, QTimer
-from geopy.geocoders import Nominatim
 
 class MapViewer(QWidget):
-    def __init__(self, friends):
+    def __init__(self, friends, user_info):
         super().__init__()
         self.friends = friends
+        self.user_info = user_info
         self.clicked_coords = None
         self.on_click_callback = None
-        self.click_checked = False  # 클릭 여부 플래그
+        self.click_checked = False
         self.init_ui()
 
     def init_ui(self):
@@ -26,7 +26,7 @@ class MapViewer(QWidget):
 
     def update_map(self):
         os.makedirs("assets", exist_ok=True)
-        geolocator = Nominatim(user_agent="friend_map_app")
+
         m = folium.Map(
             location=[36.5, 127.5],
             zoom_start=5,
@@ -37,6 +37,7 @@ class MapViewer(QWidget):
             no_wrap=True,
             max_bounds=True
         )
+
         map_var = m.get_name()
         m.get_root().script.add_child(folium.Element(f"""
             setTimeout(function() {{
@@ -48,24 +49,19 @@ class MapViewer(QWidget):
                 }}
             }}, 500);
         """))
-        coords = {}
-        for f in self.friends:
-            try:
-                location = geolocator.geocode(f.city + ", " + f.country)
-                if location:
-                    latlon = [location.latitude, location.longitude]
-                    coords[f.name] = latlon
-                    folium.Marker(latlon, tooltip=f"{f.name} ❤️{f.intimacy}").add_to(m)
-            except:
-                continue
 
-        if coords:
-            self_loc = list(coords.values())[0]
-            for name, latlon in list(coords.items())[1:]:
-                folium.PolyLine([self_loc, latlon], color="red", weight=2).add_to(m)
+        coords = []
+        for friend in self.friends:
+            if friend.x != 0 and friend.y != 0:
+                latlon = [friend.x, friend.y]
+                coords.append(latlon)
+                folium.Marker(
+                    latlon,
+                    tooltip=f"{friend.name} ❤️{friend.intimacy}"
+                ).add_to(m)
 
-        map_var = m.get_name()
-        click_js = f"""
+        # 클릭 이벤트 등록
+        m.get_root().script.add_child(folium.Element(f"""
             function onMapClick(e) {{
                 window.clickedLat = e.latlng.lat;
                 window.clickedLng = e.latlng.lng;
@@ -75,18 +71,16 @@ class MapViewer(QWidget):
                     {map_var}.on('click', onMapClick);
                 }}
             }}, 500);
-        """
-        m.get_root().script.add_child(folium.Element(click_js))
+        """))
 
         map_path = os.path.abspath("assets/world_map.html")
         m.save(map_path)
         self.web_view.load(QUrl.fromLocalFile(map_path))
-
         QTimer.singleShot(1000, self.check_for_click)
 
     def check_for_click(self):
         if self.click_checked:
-            return  # 이미 클릭했으면 종료
+            return
 
         self.web_view.page().runJavaScript("""
             if (typeof window.clickedLat !== 'undefined' && typeof window.clickedLng !== 'undefined') {
@@ -99,11 +93,10 @@ class MapViewer(QWidget):
     def handle_click_result(self, result):
         if result:
             lat, lng = result
-            print(f"[클릭됨] 위도: {lat}, 경도: {lng}")  # 콘솔 테스트 로그
+            print(f"[클릭됨] 위도: {lat}, 경도: {lng}")
             self.clicked_coords = (lat, lng)
 
-            #클릭 정보 초기화
-            self.web_view.page().runJavaScript("""      
+            self.web_view.page().runJavaScript("""
                 window.clickedLat = undefined;
                 window.clickedLng = undefined;
             """)
