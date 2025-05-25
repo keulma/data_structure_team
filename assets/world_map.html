@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_3e45a6c8ef95a91e87ff9bd17d18e298 {
+                #map_8bc7381d1075785203d6b5ebe3385033 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_3e45a6c8ef95a91e87ff9bd17d18e298" ></div>
+            <div class="folium-map" id="map_8bc7381d1075785203d6b5ebe3385033" ></div>
         
 </body>
 <script>
     
     
             setTimeout(function() {
-                if (typeof map_3e45a6c8ef95a91e87ff9bd17d18e298 !== 'undefined') {
-                    map_3e45a6c8ef95a91e87ff9bd17d18e298.setMaxBounds([[-70, -25], [90, 335]]);
-                    map_3e45a6c8ef95a91e87ff9bd17d18e298.options.maxBoundsViscosity = 0;
-                    map_3e45a6c8ef95a91e87ff9bd17d18e298.setMinZoom(2);
-                    map_3e45a6c8ef95a91e87ff9bd17d18e298.setMaxZoom(8);
+                if (typeof map_8bc7381d1075785203d6b5ebe3385033 !== 'undefined') {
+                    map_8bc7381d1075785203d6b5ebe3385033.setMaxBounds([[-70, -25], [90, 335]]);
+                    map_8bc7381d1075785203d6b5ebe3385033.options.maxBoundsViscosity = 0;
+                    map_8bc7381d1075785203d6b5ebe3385033.setMinZoom(2);
+                    map_8bc7381d1075785203d6b5ebe3385033.setMaxZoom(8);
                 }
             }, 500);
         
@@ -60,14 +60,14 @@
                 window.clickedLng = e.latlng.lng;
             }
             setTimeout(function() {
-                if (typeof map_3e45a6c8ef95a91e87ff9bd17d18e298 !== 'undefined') {
-                    map_3e45a6c8ef95a91e87ff9bd17d18e298.on('click', onMapClick);
+                if (typeof map_8bc7381d1075785203d6b5ebe3385033 !== 'undefined') {
+                    map_8bc7381d1075785203d6b5ebe3385033.on('click', onMapClick);
                 }
             }, 500);
         
     
-            var map_3e45a6c8ef95a91e87ff9bd17d18e298 = L.map(
-                "map_3e45a6c8ef95a91e87ff9bd17d18e298",
+            var map_8bc7381d1075785203d6b5ebe3385033 = L.map(
+                "map_8bc7381d1075785203d6b5ebe3385033",
                 {
                     center: [36.5, 127.5],
                     crs: L.CRS.EPSG3857,
@@ -90,13 +90,13 @@
 
                 }
             );
-            L.control.scale().addTo(map_3e45a6c8ef95a91e87ff9bd17d18e298);
+            L.control.scale().addTo(map_8bc7381d1075785203d6b5ebe3385033);
 
             
 
         
     
-            var tile_layer_3dc26b00397e95470c9d7ec1f1c33d9b = L.tileLayer(
+            var tile_layer_00251b732b9a5008adf9e266bbbee2f9 = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 2,
@@ -113,7 +113,55 @@
             );
         
     
-            tile_layer_3dc26b00397e95470c9d7ec1f1c33d9b.addTo(map_3e45a6c8ef95a91e87ff9bd17d18e298);
+            tile_layer_00251b732b9a5008adf9e266bbbee2f9.addTo(map_8bc7381d1075785203d6b5ebe3385033);
         
+    
+            var marker_bfd0ac22181289c18b4ff9d61d03fb33 = L.marker(
+                [63.31268278043484, 233.43750000000003],
+                {
+}
+            ).addTo(map_8bc7381d1075785203d6b5ebe3385033);
+        
+    
+            marker_bfd0ac22181289c18b4ff9d61d03fb33.bindTooltip(
+                `<div>
+                     fhgj ❤️0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_55ea66d90cedea0de3bb31426018d4b4 = L.marker(
+                [37.5666791, 126.9782914],
+                {
+}
+            ).addTo(map_8bc7381d1075785203d6b5ebe3385033);
+        
+    
+            var icon_7c96550850b5c9063f136df4ccd5599b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "user",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_55ea66d90cedea0de3bb31426018d4b4.bindTooltip(
+                `<div>
+                     🧍 jljkl (You)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_55ea66d90cedea0de3bb31426018d4b4.setIcon(icon_7c96550850b5c9063f136df4ccd5599b);
+            
 </script>
 </html>

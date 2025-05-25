@@ -3,6 +3,9 @@ import os
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import QUrl, QTimer
+from geopy.geocoders import Nominatim
+
+geolocator = Nominatim(user_agent="friend_map_app")
 
 class MapViewer(QWidget):
     def __init__(self, friends, user_info):
@@ -60,6 +63,19 @@ class MapViewer(QWidget):
                     tooltip=f"{friend.name} ❤️{friend.intimacy}"
                 ).add_to(m)
 
+        try:
+            location = geolocator.geocode(f"{self.user_info['city']}, {self.user_info['country']}")
+            if location:
+                user_latlon = [location.latitude, location.longitude]
+                coords.append(user_latlon)
+                folium.Marker(
+                    user_latlon,
+                    tooltip=f"🧍 {self.user_info['id']} (You)",
+                    icon=folium.Icon(color="blue", icon="user")
+                ).add_to(m)
+        except Exception as e:
+            print(f"[❌ 사용자 위치 오류] {e}")
+            
         # 클릭 이벤트 등록
         m.get_root().script.add_child(folium.Element(f"""
             function onMapClick(e) {{

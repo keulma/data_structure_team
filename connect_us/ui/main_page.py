@@ -87,6 +87,8 @@ class MainPage(QWidget):
                 friends_data = data.get("friends", [])
                 self.friends = [Friend.from_dict(fd) for fd in friends_data]
                 self.update_list()
+        self.map_viewer.friends = self.friends
+        self.map_viewer.update_map()
 
 
     def closeEvent(self, event):    
