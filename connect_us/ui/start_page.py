@@ -1,4 +1,4 @@
-# start_page
+# start_page.py
 
 import os
 import json

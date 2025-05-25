@@ -38,6 +38,9 @@ def parse_kakao_txt(file_path):
 
                 all_conversations[current_date] += 1  # 나든 상대든 전부 포함
 
+
+
+
 def open_file():
     file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
     if not file_path:
@@ -47,6 +50,9 @@ def open_file():
         messagebox.showinfo("완료", "파일 분석이 완료되었습니다. 기간을 선택한 뒤 출력하세요.")
     except Exception as e:
         messagebox.showerror("오류", str(e))
+
+
+
 
 def set_period(period):
     global start_date, selected_period

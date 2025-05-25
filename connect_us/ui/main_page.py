@@ -1,5 +1,6 @@
-import os
-import json
+#main_page.py
+
+import os, json, datetime
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget,
     QComboBox, QFileDialog, QLabel, QMessageBox, QInputDialog
@@ -24,6 +25,7 @@ class MainPage(QWidget):
         self.init_ui()
         self.load_friends()     # 친구 목록 불러오기
         self.map_viewer.set_click_callback(self.handle_map_click)
+        self.save_friends()     # 데이터 저장
 
     def init_ui(self):
         layout = QHBoxLayout()
@@ -66,6 +68,12 @@ class MainPage(QWidget):
         upload_btn.clicked.connect(self.upload_chat)
         right_panel.addWidget(upload_btn)
 
+        self.period_box = QComboBox()
+        self.period_box.addItems(["오늘", "1일", "1주일", "1개월", "1년"])
+        self.period_box.currentTextChanged.connect(self.apply_period)
+        right_panel.addWidget(QLabel("분석 기간"))
+        right_panel.addWidget(self.period_box)
+        self.selected_period = "1주일"  # 기본값 - 1주일로 설정
 
         layout.addLayout(right_panel, 1)
         self.setLayout(layout)
@@ -81,7 +89,7 @@ class MainPage(QWidget):
                 self.update_list()
 
 
-    def closeEvent(self, event):    #종료전에 저장
+    def closeEvent(self, event):    
         self.save_friends()
         event.accept()
 
@@ -105,6 +113,7 @@ class MainPage(QWidget):
         new_friend = Friend("-", "-", "-")
         self.friends.append(new_friend)
         self.update_list()
+        self.save_friends()     # 데이터 저장
 
 ############
 
@@ -114,6 +123,8 @@ class MainPage(QWidget):
             return
         self.awaiting_location_input = True
         QMessageBox.information(self, "안내", "지도에서 위치를 클릭하세요 (1회만)")
+        self.save_friends()     # 데이터 저장
+
 
     def handle_map_click(self, lat, lng):
         if not self.awaiting_location_input:
@@ -142,8 +153,9 @@ class MainPage(QWidget):
             finally:
                 self.update_list()
                 QMessageBox.information(self, "입력 완료", f"{friend.name}의 위치가 등록되었습니다!")
-
+        
         QTimer.singleShot(50, update_country)  # 100ms 후 실행 (메인 루프 잠깐 비우기)
+        self.save_friends()     # 데이터 저장
 
 
     def rename_selected_friend(self):
@@ -155,14 +167,10 @@ class MainPage(QWidget):
         if ok and new_name.strip():
             friend.name = new_name.strip()
             self.update_list()
-
+        self.save_friends()     # 데이터 저장
 
 
 ##############
-
-
-
-
 
 
     def delete_selected_friend(self):
@@ -170,6 +178,7 @@ class MainPage(QWidget):
         if current >= 0:
             del self.friends[current]
             self.update_list()
+        self.save_friends()     # 데이터 저장
 
 
     def sort_friends(self, mode):
@@ -191,17 +200,56 @@ class MainPage(QWidget):
 
 
     def upload_chat(self):
+        row = self.friend_list_widget.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "경고", "먼저 친구를 선택하세요!")
+            return
+
         path, _ = QFileDialog.getOpenFileName(self, "Open KakaoTalk Text", "", "Text Files (*.txt)")
         if path:
-            # ✅ 텍스트 분석기 연결
+            # ✅ 대화 분석
             parse_kakao_txt(path)
 
-            # ✅ 친구별 대화 수 반영
-            for friend in self.friends:
-                if friend.name in all_conversations:
-                    friend.intimacy += all_conversations[friend.name]
+            friend = self.friends[row]
 
-            # ✅ 분석 결과 저장
-            save_analysis()
+            # ✅ intimacy 반영 (선택사항)
+            friend.intimacy += sum(all_conversations.values())
 
+            # ✅ chat_history에 날짜별 대화 수 저장
+            friend.chat_history = dict(all_conversations)
+
+            # ✅ 저장
+            self.save_friends()
             self.update_list()
+
+            QMessageBox.information(self, "완료", f"{friend.name}의 채팅 기록이 저장되었습니다.")
+
+
+    def apply_period(self, period):
+        self.selected_period = period
+        today = datetime.date.today()
+
+        for friend in self.friends:
+            if not hasattr(friend, "chat_history") or not friend.chat_history:
+                continue  # 대화 기록이 없는 경우 건너뜀
+
+            count = 0
+            for date_str, num in friend.chat_history.items():
+                date_obj = datetime.date.fromisoformat(date_str)
+                delta = (today - date_obj).days
+
+                if period == "오늘" and delta == 0:
+                    count += num
+                elif period == "1일" and delta <= 1:
+                    count += num
+                elif period == "1주일" and delta <= 7:
+                    count += num
+                elif period == "1개월" and delta <= 30:
+                    count += num
+                elif period == "1년" and delta <= 365:
+                    count += num
+
+            friend.intimacy = count  # ✅ 기존 친밀도 무시하고 재계산
+
+        self.save_friends()
+        self.update_list()
