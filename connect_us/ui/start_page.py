@@ -50,7 +50,7 @@ class StartPage(QWidget):
 
     def connect(self):
         user_id = self.id_input.text().strip()  
-        if not user_id:    #사용자 ID 입력이 공백이면 종료
+        if not user_id:    #사용자 ID 입력 공백 시 종료
             return
 
         os.makedirs("users", exist_ok=True)
@@ -62,14 +62,14 @@ class StartPage(QWidget):
                 data = json.load(f)
                 user_info = data["user"]  # 배열: [id, country, city]
         else:
-            # 사용자 정보 없음음 → 새로 저장
+            # 사용자 정보 없음 → 새로 저장
             user_info = [
                 user_id,
                 self.country_input.text().strip(),
                 self.city_input.text().strip()
             ]
-            with open(file_path, "w", encoding="utf-8") as f:       #저장장
+            with open(file_path, "w", encoding="utf-8") as f:       #저장
                 json.dump({ "user": user_info }, f, ensure_ascii=False, indent=2)
 
-        # → 다음 페이지로 넘어감
+        # 메인 페이지로 넘어감
         self.switch_to_main(*user_info)

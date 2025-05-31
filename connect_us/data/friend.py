@@ -12,7 +12,7 @@ class Friend:
         self.y = y
         self.intimacy = intimacy
         self.registered_at = registered_at or datetime.now()  # 새로 생성 or 불러온 시간
-        self.chat_history = chat_history or {}  # ✅ 날짜별 대화 수 저장
+        self.chat_history = chat_history or {}  # 날짜별 대화 수 저장
 
     def to_dict(self):
         return {
@@ -22,8 +22,8 @@ class Friend:
             "x": self.x,
             "y": self.y,
             "intimacy": self.intimacy,
-            "registered_at": self.registered_at.isoformat(),  # 문자열로 저장
-            "chat_history": self.chat_history   # ✅ 포함
+            "registered_at": self.registered_at.isoformat(),
+            "chat_history": self.chat_history
         }
 
     @staticmethod

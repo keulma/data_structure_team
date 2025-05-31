@@ -52,7 +52,7 @@ class MapViewer(QWidget):
             location=[36.5, 127.5],
             zoom_start=5,
             min_zoom=2,
-            max_zoom=6,
+            max_zoom=18,
             tiles="CartoDB positron",
             control_scale=True,
             no_wrap=True,
@@ -66,7 +66,7 @@ class MapViewer(QWidget):
                     {map_var}.setMaxBounds([[-70, -25], [90, 335]]);
                     {map_var}.options.maxBoundsViscosity = 0;
                     {map_var}.setMinZoom(2);
-                    {map_var}.setMaxZoom(8);
+                    {map_var}.setMaxZoom(18);
                 }}
             }}, 500);
         """))

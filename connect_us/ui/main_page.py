@@ -20,7 +20,7 @@ class MainPage(QWidget):
         super().__init__()
         self.user_info = user_info
         self.friends = []
-        self.awaiting_location_input = False  # ✅ 지도 클릭 대기 상태
+        self.awaiting_location_input = False  # 지도 클릭 대기 상태
 
         self.init_ui()
         self.load_friends()     # 친구 목록 불러오기
@@ -30,11 +30,11 @@ class MainPage(QWidget):
     def init_ui(self):
         layout = QHBoxLayout()
 
-        # ✅ 왼쪽 지도 영역
+        # 지도
         self.map_viewer = MapViewer(self.friends, self.user_info)
-        layout.addWidget(self.map_viewer, 4)  # 지도는 3 비율
+        layout.addWidget(self.map_viewer, 4)  # 지도 3 비율
 
-        # ✅ 오른쪽 친구 목록 및 제어 UI
+        # 친구 목록, UI
         right_panel = QVBoxLayout()
 
         self.friend_list_widget = QListWidget()
@@ -98,7 +98,7 @@ class MainPage(QWidget):
 
     def save_friends(self):
         file_path = os.path.join("users", f"{self.user_info['id']}.json")
-        # 파일이 있던 여부에 관계없이 무작위 전체 구조 재정의
+        # 재정의
         data = {
             "user": [
                 self.user_info["id"],
@@ -112,13 +112,11 @@ class MainPage(QWidget):
 
 
     def add_friend_dialog(self):
-        # 예시: 바로 친구 추가
+        # 친구 추가
         new_friend = Friend("-", "-", "-")
         self.friends.append(new_friend)
         self.update_list()
         self.save_friends()     # 데이터 저장
-
-############
 
     def start_location_input(self):
         if self.friend_list_widget.currentRow() < 0:
@@ -143,21 +141,21 @@ class MainPage(QWidget):
         self.awaiting_location_input = False
         self.map_viewer.friends = self.friends
 
-        # ✅ reverse geocode는 약간 지연시켜서 실행 (GUI 끊김 방지)
+        # reverse geocode 지연 실행 (GUI 끊김 이슈)
         def update_country():
             try:
                 geolocator = Nominatim(user_agent="friend_map_app")
                 location = geolocator.reverse((lat, lng), language='en', timeout = 3)
                 if location and 'country' in location.raw['address']:
                     friend.country = location.raw['address']['country']
-                    print(f"🌍 국가 자동 설정됨: {friend.country}")
+                    print(f"Country select: {friend.country}")
             except Exception as e:
-                print(f"❌ Reverse geocoding 오류: {e}")
+                print(f"Reverse geocoding error: {e}")
             finally:
                 self.update_list()
-                QMessageBox.information(self, "입력 완료", f"{friend.name}의 위치가 등록되었습니다!")
+                QMessageBox.information(self, "input finish", f"{friend.name}location set")
         
-        QTimer.singleShot(50, update_country)  # 100ms 후 실행 (메인 루프 잠깐 비우기)
+        QTimer.singleShot(50, update_country)  # 100ms 후 실행
         self.save_friends()     # 데이터 저장
 
 
@@ -171,10 +169,6 @@ class MainPage(QWidget):
             friend.name = new_name.strip()
             self.update_list()
         self.save_friends()     # 데이터 저장
-
-
-##############
-
 
     def delete_selected_friend(self):
         current = self.friend_list_widget.currentRow()
@@ -198,7 +192,7 @@ class MainPage(QWidget):
         self.friend_list_widget.clear()
         for i, f in enumerate(self.friends, 1):
             self.friend_list_widget.addItem(f"{i}. {f.country}, {f.name}, ❤️{f.intimacy}")
-        # ✅ 지도 갱신
+        # 지도 갱신
         self.map_viewer.update_map()
 
 
@@ -212,9 +206,9 @@ class MainPage(QWidget):
         if path:
             parse_kakao_txt(path)
             friend = self.friends[row]
-            friend.chat_history = dict(all_conversations)  # ✅ 날짜별 메시지 수 저장
+            friend.chat_history = dict(all_conversations)  # 날짜별 메시지 수 저장
 
-            # ✅ 현재 분석 기간 기준으로 intimacy 계산
+            # intimacy 계산
             today = datetime.date.today()
             period = self.selected_period
             count = 0
@@ -234,7 +228,7 @@ class MainPage(QWidget):
                 elif period == "1년" and delta <= 365:
                     count += num
 
-            friend.intimacy = count  # ✅ 선택된 분석 기간 기준으로 반영
+            friend.intimacy = count  # 선택된 분석 기간 기준으로 반영
 
             self.save_friends()
             self.update_list()
@@ -250,7 +244,7 @@ class MainPage(QWidget):
 
         for friend in self.friends:
             if not hasattr(friend, "chat_history") or not friend.chat_history:
-                continue  # 대화 기록이 없는 경우 건너뜀
+                continue  # 대화 기록이 없는 경우 패스
 
             count = 0
             for date_str, num in friend.chat_history.items():
