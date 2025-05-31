@@ -34,7 +34,7 @@ class MainApp(QStackedWidget):
 
         self.main_page = None
         self.setCurrentIndex(0)
-    
+
 
     def switch_to_main(self, user_id, country, city):
         user_info = {
