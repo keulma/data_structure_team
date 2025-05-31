@@ -24,6 +24,7 @@ class MainPage(QWidget):
 
         self.init_ui()
         self.load_friends()     # 친구 목록 불러오기
+        self.apply_period()   
         self.map_viewer.set_click_callback(self.handle_map_click)
         self.save_friends()     # 데이터 저장
 
