@@ -61,7 +61,7 @@ class MainPage(QWidget):
 
         self.period_box = QComboBox()
         self.period_box.addItems(["오늘", "1일", "1주일", "1개월", "1년"])
-        self.period_box.currentTextChanged.connect(self.apply_period)
+        self.period_box.currentTextChanged.connect(self.select_period)
         right_panel.addWidget(QLabel("분석 기간"))
         right_panel.addWidget(self.period_box)
         self.selected_period = "오늘"  # 기본값 - 오늘로 설정
@@ -96,27 +96,28 @@ class MainPage(QWidget):
         self.save_friends()
         event.accept()
 
-    def save_friends(self):
-        file_path = os.path.join("users", f"{self.user_info['id']}.json")
-        # 재정의
-        data = {
-            "user": [
-                self.user_info["id"],
-                self.user_info["country"],
-                self.user_info["city"]
-            ],
-            "friends": [f.to_dict() for f in self.friends]
-        }
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+
+    #버튼들
     def add_friend_dialog(self):
         # 친구 추가
         new_friend = Friend("-", "-", "-")
         self.friends.append(new_friend)
         self.update_list()
-        self.save_friends()     # 데이터 저장
+        self.interaction_sort()
+
+    def rename_selected_friend(self):
+        row = self.friend_list_widget.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "경고", "먼저 친구를 선택하세요!")
+            return
+        friend = self.friends[row]
+        new_name, ok = QInputDialog.getText(self, "이름 변경", "새 이름:", text=friend.name)
+        if ok and new_name.strip():
+            friend.name = new_name.strip()
+            self.update_list()
+        self.interaction_sort()
 
     def start_location_input(self):
         if self.friend_list_widget.currentRow() < 0:
@@ -124,8 +125,6 @@ class MainPage(QWidget):
             return
         self.awaiting_location_input = True
         QMessageBox.information(self, "안내", "지도에서 위치를 클릭하세요 (1회만)")
-        self.save_friends()     # 데이터 저장
-
 
     def handle_map_click(self, lat, lng):
         if not self.awaiting_location_input:
@@ -152,41 +151,11 @@ class MainPage(QWidget):
             except Exception as e:
                 print(f"Reverse geocoding error: {e}")
             finally:
-                self.update_list()
+                self.interaction_sort()
                 QMessageBox.information(self, "input finish", f"{friend.name} location set")
         
-        QTimer.singleShot(50, update_country)  # 100ms 후 실행
-        self.save_friends()     # 데이터 저장
-
-
-    def rename_selected_friend(self):
-        row = self.friend_list_widget.currentRow()
-        if row < 0:
-            return
-        friend = self.friends[row]
-        new_name, ok = QInputDialog.getText(self, "이름 변경", "새 이름:", text=friend.name)
-        if ok and new_name.strip():
-            friend.name = new_name.strip()
-            self.update_list()
-        self.save_friends()     # 데이터 저장
-
-    def delete_selected_friend(self):
-        current = self.friend_list_widget.currentRow()
-        if current >= 0:
-            del self.friends[current]
-            self.update_list()
-        self.save_friends()     # 데이터 저장
-
-
-    def sort_friends(self, mode):
-        if mode == "Alphabet":
-            self.friends.sort(key=lambda f: f.name)
-        elif mode == "Registration":
-            self.friends.sort(key=lambda f: f.registered_at)
-        elif mode == "Intimacy":
-            self.friends.sort(key=lambda f: -f.intimacy)
-        self.update_list()
-
+        QTimer.singleShot(50, update_country)  # 50ms 후 실행
+    
 
     def update_list(self):
         self.friend_list_widget.clear()
@@ -195,6 +164,10 @@ class MainPage(QWidget):
         # 지도 갱신
         self.map_viewer.update_map()
 
+    def select_period(self, period):
+        self.selected_period = period
+        self.map_viewer.selected_period = period
+        self.interaction_sort()
 
     def upload_chat(self):
         row = self.friend_list_widget.currentRow()
@@ -230,21 +203,58 @@ class MainPage(QWidget):
 
             friend.intimacy = count  # 선택된 분석 기간 기준으로 반영
 
-            self.save_friends()
+            self.interaction_sort()
+
+    def delete_selected_friend(self):
+        row = self.friend_list_widget.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "경고", "먼저 친구를 선택하세요!")
+            return
+        current = self.friend_list_widget.currentRow()
+        if current >= 0:
+            del self.friends[current]
             self.update_list()
+        self.interaction_sort()
 
 
 
-    def apply_period(self, period):
-        self.selected_period = period
-        self.map_viewer.selected_period = period  
-        self.map_viewer.update_map()
-        
+
+
+
+
+
+
+    def save_friends(self):
+        file_path = os.path.join("users", f"{self.user_info['id']}.json")
+
+        data = {
+            "user": [
+                self.user_info["id"],
+                self.user_info["country"],
+                self.user_info["city"]
+            ],
+            "friends": [f.to_dict() for f in self.friends]
+        }
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+    def sort_friends(self, mode):
+        if mode == "Alphabet":
+            self.friends.sort(key=lambda f: f.name)
+        elif mode == "Registration":
+            self.friends.sort(key=lambda f: f.registered_at)
+        elif mode == "Intimacy":
+            self.friends.sort(key=lambda f: -f.intimacy)
+        self.update_list()
+
+    def apply_period(self):
         today = datetime.date.today()
+        period = self.selected_period
 
         for friend in self.friends:
             if not hasattr(friend, "chat_history") or not friend.chat_history:
-                continue  # 대화 기록이 없는 경우 패스
+                friend.intimacy = 0
+                continue
 
             count = 0
             for date_str, num in friend.chat_history.items():
@@ -262,7 +272,13 @@ class MainPage(QWidget):
                 elif period == "1년" and delta <= 365:
                     count += num
 
-            friend.intimacy = count  # 기존 친밀도 재계산
+            friend.intimacy = count
 
-        self.save_friends()
         self.update_list()
+
+
+    def interaction_sort(self):
+        self.save_friends()
+        self.apply_period()   
+        self.sort_friends(self.sort_box.currentText())
+        
