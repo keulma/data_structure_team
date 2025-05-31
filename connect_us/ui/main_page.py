@@ -145,7 +145,7 @@ class MainPage(QWidget):
         def update_country():
             try:
                 geolocator = Nominatim(user_agent="friend_map_app")
-                location = geolocator.reverse((lat, lng), language='en', timeout = 3)
+                location = geolocator.reverse((lat, lng), language='en', timeout = 1)
                 if location and 'country' in location.raw['address']:
                     friend.country = location.raw['address']['country']
                     print(f"Country select: {friend.country}")
@@ -153,7 +153,7 @@ class MainPage(QWidget):
                 print(f"Reverse geocoding error: {e}")
             finally:
                 self.update_list()
-                QMessageBox.information(self, "input finish", f"{friend.name}location set")
+                QMessageBox.information(self, "input finish", f"{friend.name} location set")
         
         QTimer.singleShot(50, update_country)  # 100ms 후 실행
         self.save_friends()     # 데이터 저장
@@ -262,7 +262,7 @@ class MainPage(QWidget):
                 elif period == "1년" and delta <= 365:
                     count += num
 
-            friend.intimacy = count  # ✅ 기존 친밀도 무시하고 재계산
+            friend.intimacy = count  # 기존 친밀도 재계산
 
         self.save_friends()
         self.update_list()

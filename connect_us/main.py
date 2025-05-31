@@ -18,9 +18,9 @@ class MainApp(QStackedWidget):
         self.screen_width = screen_rect.width()
         self.screen_height = screen_rect.height()
 
-        # start page 크기 설정정
-        start_width = int(self.screen_width * 0.4)
-        start_height = int(self.screen_height * 0.5)
+        # start page 크기 설정
+        start_width = int(self.screen_width * 0.7)
+        start_height = int(self.screen_height * 0.7)
 
         self.setWindowTitle("Friend Map Project")
         self.setFixedSize(start_width, start_height)
@@ -58,7 +58,7 @@ class MainApp(QStackedWidget):
         self.setCurrentIndex(1)              
 
 
-    def closeEvent(self, event):    # 종료 시(X누름) 친구 저장
+    def closeEvent(self, event):    # 종료 시 친구 저장
         if self.main_page:  # 메인페이지까지 진입했을 때만 저장
             self.main_page.save_friends()
         event.accept()

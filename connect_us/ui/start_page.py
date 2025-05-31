@@ -12,9 +12,9 @@ class StartPage(QWidget):
         self.switch_to_main = switch_to_main
         self.init_ui()
 
+
     def init_ui(self):
         layout = QVBoxLayout()
-
 
         # connect-us 표지 이미지 추가 
         image_label = QLabel()
@@ -73,3 +73,4 @@ class StartPage(QWidget):
 
         # 메인 페이지로 넘어감
         self.switch_to_main(*user_info)
+        self.close()

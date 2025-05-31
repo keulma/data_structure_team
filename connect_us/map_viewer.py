@@ -12,7 +12,7 @@ def generate_smooth_curve(p1, p2, curve_strength=0.5, num_points=60):
     mid_lat = (p1[0] + p2[0]) / 2
     mid_lng = (p1[1] + p2[1]) / 2
 
-    # 곡선 중심을 항상 북쪽(위)으로 올리기
+    # 곡선 중심을 항상 북쪽으로 올리기
     curve_lat = mid_lat + abs(p2[0] - p1[0]) * curve_strength
     curve_lng = mid_lng  # 좌우 이동 없음
 
@@ -88,11 +88,11 @@ class MapViewer(QWidget):
                 coords.append(user_latlon)
                 folium.Marker(
                     user_latlon,
-                    tooltip=f"🧍 {self.user_info['id']} (You)",
+                    tooltip=f"{self.user_info['id']} (You)",
                     icon=folium.Icon(color="blue", icon="user")
                 ).add_to(m)
         except Exception as e:
-            print(f"[❌ 사용자 위치 오류] {e}")
+            print(f"[user location error] {e}")
 
         if 'user_latlon' in locals():
             for friend in self.friends:
@@ -144,7 +144,7 @@ class MapViewer(QWidget):
     def handle_click_result(self, result):
         if result:
             lat, lng = result
-            print(f"[클릭됨] 위도: {lat}, 경도: {lng}")
+            print(f"latitude: {lat}, longitude: {lng}")
             self.clicked_coords = (lat, lng)
 
             self.web_view.page().runJavaScript("""
