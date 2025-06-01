@@ -31,7 +31,7 @@ class MapViewer(QWidget):
         self.clicked_coords = None
         self.on_click_callback = None
         self.click_checked = False
-        self.selected_period = "하루" 
+        self.selected_period = "오늘" 
 
         self.init_ui()
 
@@ -167,11 +167,11 @@ class MapViewer(QWidget):
             "1년": 1
         }
 
-        ratio = period_ratio.get(self.selected_period, 1)
-        adjusted_score = min(intimacy * ratio, 10000)
+        ratio = period_ratio.get(self.selected_period, 1)  # 현재 분석 기간 기준에 맞는, 곱할 가중치
+        adjusted_score = min(intimacy * ratio, 10000)   # 가중치를 곱했을 때, 최대 10000
         if adjusted_score == 0:
             level_weight = 0
             return level_weight
         else :
-            level_weight = int(adjusted_score // 1000) + 1  # 0~999 → 1, ..., 9000~9999 → 10
+            level_weight = int(adjusted_score // 1000) + 1  # 0~999 → 1, ..., 9000~9999 → 10       
             return level_weight

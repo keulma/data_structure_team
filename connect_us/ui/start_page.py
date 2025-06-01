@@ -18,28 +18,31 @@ class StartPage(QWidget):
 
         # connect-us 표지 이미지 추가 
         image_label = QLabel()
-        pixmap = QPixmap("assets/connect-us_image.png")
+        pixmap = QPixmap("assets/connect-us_image.png")     # 이미지 : GPT로 생성 - CONNECT_US라는 프로그램의 표지에 쓸 사진으로, SNS 연결망의 느낌이 나는 그림 그리기
         image_label.setPixmap(pixmap)
         image_label.setScaledContents(True)
         image_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(image_label)
 
-        layout.addSpacing(15)   #공백 띄우기
+        #layout.addSpacing(15)   #공백 띄우기
 
         self.id_input = QLineEdit()
         self.id_input.setPlaceholderText("ID")
-
+        self.id_input.setFixedHeight(25)
         layout.addWidget(self.id_input)
 
         self.country_input = QLineEdit()
         self.country_input.setPlaceholderText("Country")
+        self.country_input.setFixedHeight(25)
         layout.addWidget(self.country_input)
 
         self.city_input = QLineEdit()
         self.city_input.setPlaceholderText("City")
+        self.city_input.setFixedHeight(25)
         layout.addWidget(self.city_input)
 
         connect_btn = QPushButton("Connect")
+        connect_btn.setFixedHeight(25) 
         connect_btn.clicked.connect(self.connect)
         layout.addWidget(connect_btn)
 
