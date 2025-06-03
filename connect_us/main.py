@@ -64,7 +64,7 @@ class MainApp(QStackedWidget):
 
 
     def closeEvent(self, event):    # 종료 시 친구 저장
-        if self.main_page:  # 메인페이지까지 진입했을 때만 저장
+        if self.main_page:  # 메인페이지까지 진입했을 때 저장
             self.main_page.save_friends()
         event.accept()
 

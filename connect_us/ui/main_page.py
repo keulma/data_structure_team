@@ -218,7 +218,7 @@ class MainPage(QWidget):
             self.map_viewer.update_map() # 친밀도 선 굵기 변경
 
 
-    def show_help_dialog(self):  # ❗ 도움말 다이얼로그 정의
+    def show_help_dialog(self):  # 도움말 다이얼로그 정의
         help_text = (
             "# 정렬 기준: 이름순, 등록순, 친밀도순 중 선택 \n"
             "# 친구 추가: 친구 추가 버튼 --> 이후 아래 버튼들로 수정 \n"

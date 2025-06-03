@@ -5,6 +5,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import QUrl, QTimer
 from geopy.geocoders import Nominatim
+from folium import Tooltip
 
 geolocator = Nominatim(user_agent="friend_map_app")
 
@@ -76,9 +77,10 @@ class MapViewer(QWidget):
             if friend.x != 0 and friend.y != 0:
                 latlon = [friend.x, friend.y]
                 coords.append(latlon)
+                tooltip_text = f"{friend.name}<br>{friend.country} | ❤️{friend.intimacy}"
                 folium.Marker(
                     latlon,
-                    tooltip=f"{friend.name} ❤️{friend.intimacy}"
+                    tooltip=Tooltip(tooltip_text)
                 ).add_to(m)
 
         try:
@@ -163,7 +165,6 @@ class MapViewer(QWidget):
             "1일": 182,
             "1주일": 52,
             "1개월": 12,
-            "6개월": 2,
             "1년": 1
         }
 
@@ -173,5 +174,6 @@ class MapViewer(QWidget):
             level_weight = 0
             return level_weight
         else :
-            level_weight = int(adjusted_score // 1000) + 1  # 0~999 → 1, ..., 9000~9999 → 10       
+            level_weight = int(adjusted_score // 1000) + 1  # 0~999 → 1, ..., 9000~9999 → 10         
             return level_weight
+        
